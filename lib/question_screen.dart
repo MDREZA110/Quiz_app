@@ -48,7 +48,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 30),
-              ...currentQuestion.getShuffledAnswer().map(
+              ...currentQuestion.shuffledAnswer.map(
                 (answer) // we can assign another name than "answer"
                 {
                   return AnswerButton(
