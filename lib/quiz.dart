@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/data/questions.dart';
 import 'package:quiz_app/question_screen.dart';
 import 'package:quiz_app/start_screen.dart';
+import 'package:quiz_app/result_screen.dart';
 
 class Quiz extends StatefulWidget {
   const Quiz({super.key});
@@ -12,9 +14,22 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
+  List<String> selectedAnswerList = [];
   var activeScreen = 'start-screen';
 
-  void switchScreen() {
+//! i will change function-name from chosenAnswer to saveChosenAnswer
+
+  void choseAnswer(String selectedAnswer) {
+    selectedAnswerList.add(selectedAnswer);
+    if (selectedAnswerList.length == questions.length) {
+      setState(() {
+        //selectedAnswerList = [];
+        activeScreen = 'result-screen';
+      });
+    }
+  }
+
+  void switchScreen({String? screenName}) {
     setState(() {
       activeScreen = 'question-screen';
     });
@@ -25,7 +40,13 @@ class _QuizState extends State<Quiz> {
     Widget screenWidget = StartScreen(switchScreen);
 
     if (activeScreen == 'question-screen') {
-      screenWidget = const QuestionsScreen();
+      screenWidget = QuestionsScreen(
+        onSelectAnswer: choseAnswer /*saveChosenAnswer */,
+      );
+    }
+
+    if (activeScreen == 'result-screen') {
+      screenWidget = ResultScreen(chosenAnswer: selectedAnswerList);
     }
 
     return MaterialApp(
@@ -36,8 +57,8 @@ class _QuizState extends State<Quiz> {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Color.fromARGB(255, 62, 28, 122),
-                      Color.fromARGB(255, 23, 4, 54)
+                      Color.fromARGB(255, 89, 44, 167),
+                      Color.fromARGB(255, 38, 9, 85)
                     ]),
               ),
               child: screenWidget)),
